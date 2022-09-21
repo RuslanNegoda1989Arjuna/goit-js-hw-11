@@ -28,27 +28,28 @@ console.log(refs.submit);
 
 refs.searchForm.addEventListener('submit', onSubmit);
 
+let textSearch = '';
+
 function onSubmit(evt) {
   evt.preventDefault();
 
   // Значення з інпут форми
 
-  const textSearch = evt.currentTarget.elements.searchQuery.value;
+  textSearch = evt.currentTarget.elements.searchQuery.value;
   console.log(textSearch);
 
   // start fetch
-
-  async function getUser() {
-    const API_KEY = '30077123-b07f3bce85b956a1421c5c012';
-    const API = 'https://pixabay.com/api';
-    const parametersS =
-      'image_type=photo&orientation=horizontal&safesearch=true';
-    const url = `${API}/?key=${API_KEY}&q=${textSearch}&${parametersS}`;
-    try {
-      const response = await axios(url);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
+  getUser();
+}
+async function getUser() {
+  const API_KEY = '30077123-b07f3bce85b956a1421c5c012';
+  const API = 'https://pixabay.com/api';
+  const parametersS = 'image_type=photo&orientation=horizontal&safesearch=true';
+  const url = `${API}/?key=${API_KEY}&q=${textSearch}&${parametersS}`;
+  try {
+    const response = await axios.get(url);
+    console.log(response);
+  } catch (error) {
+    console.error(error);
   }
 }

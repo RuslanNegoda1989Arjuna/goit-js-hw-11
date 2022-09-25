@@ -35,11 +35,13 @@ refs.loadMore.addEventListener('click', onLoadeMore);
 
 function onSubmit(evt) {
   evt.preventDefault();
+  refs.loadMore.classList.add('is-hidden');
 
   // Значення з інпут форми
 
   picturesApiSeartch.queryPic =
     evt.currentTarget.elements.searchQuery.value.trim();
+
   picturesApiSeartch.clearPage();
 
   // Перевірка на заповненість
@@ -50,8 +52,6 @@ function onSubmit(evt) {
   }
 
   clearPicture();
-
-  console.log(picturesApiSeartch.queryPic);
 
   // start fetch Ф-ція отримання зображень
   picturesApiSeartch.getPictures().then(data => {

@@ -8,6 +8,16 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 import PicturesApiSeartch from './fetchPic';
 
+// Налаштування повідомлень
+Notiflix.Notify.init({
+  width: '500px',
+  position: 'left-top',
+  distance: '10px',
+  opacity: 1,
+  fontSize: '20px',
+});
+// _______________________________
+
 const refs = {
   searchForm: document.querySelector('.search-form'),
   input: document.querySelector('[name="searchQuery"]'),
@@ -17,6 +27,8 @@ const refs = {
 };
 
 const picturesApiSeartch = new PicturesApiSeartch();
+
+refs.loadMore.classList.add('is-hidden');
 
 refs.searchForm.addEventListener('submit', onSubmit);
 refs.loadMore.addEventListener('click', onLoadeMore);
@@ -30,6 +42,13 @@ function onSubmit(evt) {
     evt.currentTarget.elements.searchQuery.value.trim();
   picturesApiSeartch.clearPage();
 
+  // Перевірка на заповненість
+  if (picturesApiSeartch.queryPic === '') {
+    Notiflix.Notify.warning('Please, fill the main field');
+
+    return;
+  }
+
   clearPicture();
 
   console.log(picturesApiSeartch.queryPic);
@@ -39,13 +58,15 @@ function onSubmit(evt) {
     console.log(data);
     console.log(data.hits);
 
-    if (data.hits === []) {
+    if (data.totalHits === 0) {
       Notiflix.Notify.warning(
         'Sorry, there are no images matching your search query. Please try again.'
       );
     }
 
     murckupCard(data);
+
+    refs.loadMore.classList.remove('is-hidden');
   });
 }
 
@@ -132,12 +153,12 @@ let lightbox = new SimpleLightbox('.photo-card a', {
 });
 
 // e.g. Only message
-Notiflix.Notify.success('Sol lucet omnibus');
+// Notiflix.Notify.success('Sol lucet omnibus');
 
-Notiflix.Notify.failure('Qui timide rogat docet negare');
+// Notiflix.Notify.failure('Qui timide rogat docet negare');
 
-Notiflix.Notify.warning('Memento te hominem esse');
+// Notiflix.Notify.warning('Memento te hominem esse');
 
-Notiflix.Notify.info('Cogito ergo sum');
+// Notiflix.Notify.info('Cogito ergo sum');
 
 // e.g. Message with a callback

@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   font-size: 25px;
-  background-color: rgb(10, 166, 177);
+  background-color: rgb(10, 166, 177, 0.3);
   justify-content: center;
 
   position: fixed;
@@ -15,7 +15,7 @@
   outline: transparent;
 
   border: 2px solid rgba(33, 33, 33, 0.2);
-  border-radius: 10px;
+  border-radius: 30px;
 
   cursor: text;
 
@@ -33,7 +33,7 @@
   margin: 10px 20px;
   padding: 15px 15px;
   border: 2px solid rgba(33, 33, 33, 0.2);
-  border-radius: 10px;
+  border-radius: 30px;
 
   cursor: pointer;
 

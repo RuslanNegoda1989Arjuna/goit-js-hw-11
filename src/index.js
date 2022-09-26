@@ -74,7 +74,6 @@ function onLoadeMore() {
   picturesApiSeartch.getPictures().then(data => {
     let pageNow = data.hits.length;
     allPage += pageNow;
-    console.log(allPage);
 
     murckupCardLoadMore(data);
 
@@ -157,6 +156,7 @@ function murckupCardLoadMore(data) {
 function clearPicture() {
   refs.gallery.innerHTML = '';
 }
+
 //  Lightbox бібліотека підключення
 let lightbox = new SimpleLightbox('.photo-card a', {
   captions: true,

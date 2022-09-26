@@ -23,10 +23,8 @@ export default class PicturesApiSeartch {
 
     try {
       const response = await axios(config);
-      console.log(response);
 
       const data = response.data;
-      console.log(data);
       this.incrementPage();
       return data;
     } catch (error) {

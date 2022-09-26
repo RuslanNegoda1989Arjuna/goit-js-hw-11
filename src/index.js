@@ -32,6 +32,7 @@ refs.loadMore.classList.add('is-hidden');
 
 refs.searchForm.addEventListener('submit', onSubmit);
 refs.loadMore.addEventListener('click', onLoadeMore);
+let allPage = 0;
 
 function onSubmit(evt) {
   evt.preventDefault();
@@ -55,14 +56,13 @@ function onSubmit(evt) {
 
   // start fetch Ф-ція отримання зображень
   picturesApiSeartch.getPictures().then(data => {
-    console.log(data);
-    console.log(data.hits);
-
     if (data.totalHits === 0) {
       Notiflix.Notify.warning(
         'Sorry, there are no images matching your search query. Please try again.'
       );
+      return;
     }
+    allPage += data.hits.length;
 
     murckupCard(data);
 
@@ -72,7 +72,19 @@ function onSubmit(evt) {
 
 function onLoadeMore() {
   picturesApiSeartch.getPictures().then(data => {
+    let pageNow = data.hits.length;
+    allPage += pageNow;
+    console.log(allPage);
+
     murckupCardLoadMore(data);
+
+    if (data.totalHits <= allPage) {
+      refs.loadMore.classList.add('is-hidden');
+      Notiflix.Notify.info(
+        ' Were sorry, but you ve reached the end of search results.'
+      );
+      allPage = 0;
+    }
   });
 }
 // Ф-ція відмальовування перших картинок
@@ -151,14 +163,3 @@ let lightbox = new SimpleLightbox('.photo-card a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
-
-// e.g. Only message
-// Notiflix.Notify.success('Sol lucet omnibus');
-
-// Notiflix.Notify.failure('Qui timide rogat docet negare');
-
-// Notiflix.Notify.warning('Memento te hominem esse');
-
-// Notiflix.Notify.info('Cogito ergo sum');
-
-// e.g. Message with a callback

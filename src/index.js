@@ -64,6 +64,14 @@ function onSubmit(evt) {
     }
     allPage += data.hits.length;
 
+    if (data.totalHits <= allPage) {
+      refs.loadMore.classList.add('is-hidden');
+
+      allPage = 0;
+      murckupCard(data);
+      return;
+    }
+
     murckupCard(data);
 
     refs.loadMore.classList.remove('is-hidden');
@@ -75,7 +83,7 @@ function onLoadeMore() {
     let pageNow = data.hits.length;
     allPage += pageNow;
 
-    murckupCardLoadMore(data);
+    murckupCard(data);
 
     if (data.totalHits <= allPage) {
       refs.loadMore.classList.add('is-hidden');
@@ -116,42 +124,10 @@ function murckupCard(data) {
     )
     .join('');
 
-  refs.gallery.insertAdjacentHTML('afterbegin', murkup);
-  lightbox.refresh();
-}
-// Ф-ція відмальовування дозавантаження.
-function murckupCardLoadMore(data) {
-  const murkup = data.hits
-    .map(
-      data => `<div class="photo-card">
-  <a href="${data.largeImageURL}">
-    <img class="photo-img" src="${data.webformatURL}" alt="${data.tags}" loading="lazy" />
-  </a>
-  <div class="info">
-    <p class="info-item">
-      <b>Likes</b>
-      ${data.likes}
-    </p>
-    <p class="info-item">
-      <b>Views</b>
-      ${data.views}
-    </p>
-    <p class="info-item">
-      <b>Comments</b>
-      ${data.comments}
-    </p>
-    <p class="info-item">
-      <b>Downloads</b>
-      ${data.downloads}
-    </p>
-  </div>
-  </div>`
-    )
-    .join('');
-
   refs.gallery.insertAdjacentHTML('beforeend', murkup);
   lightbox.refresh();
 }
+
 //  Функція очистки завантежених сторінок
 function clearPicture() {
   refs.gallery.innerHTML = '';

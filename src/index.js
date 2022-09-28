@@ -20,8 +20,8 @@ Notiflix.Notify.init({
 
 const refs = {
   searchForm: document.querySelector('.search-form'),
-  input: document.querySelector('[name="searchQuery"]'),
-  submit: document.querySelector('[type="submit"]'),
+  // input: document.querySelector('[name="searchQuery"]'),
+  // submit: document.querySelector('[type="submit"]'),
   gallery: document.querySelector('.gallery'),
   loadMore: document.querySelector('.load-more'),
 };
@@ -55,27 +55,32 @@ function onSubmit(evt) {
   clearPicture();
 
   // start fetch Ф-ція отримання зображень
-  picturesApiSeartch.getPictures().then(data => {
-    if (data.totalHits === 0) {
-      Notiflix.Notify.warning(
-        'Sorry, there are no images matching your search query. Please try again.'
-      );
-      return;
-    }
-    allPage += data.hits.length;
+  picturesApiSeartch
+    .getPictures()
+    .then(data => {
+      if (data.totalHits === 0) {
+        Notiflix.Notify.warning(
+          'Sorry, there are no images matching your search query. Please try again.'
+        );
+        return;
+      }
+      allPage += data.hits.length;
 
-    if (data.totalHits <= allPage) {
-      refs.loadMore.classList.add('is-hidden');
+      if (data.totalHits <= allPage) {
+        refs.loadMore.classList.add('is-hidden');
 
-      allPage = 0;
+        allPage = 0;
+        murckupCard(data);
+        return;
+      }
+
       murckupCard(data);
-      return;
-    }
 
-    murckupCard(data);
-
-    refs.loadMore.classList.remove('is-hidden');
-  });
+      refs.loadMore.classList.remove('is-hidden');
+    })
+    .catch(error => {
+      console.error(error);
+    });
 }
 
 function onLoadeMore() {

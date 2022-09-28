@@ -21,15 +21,11 @@ export default class PicturesApiSeartch {
       },
     };
 
-    try {
-      const response = await axios(config);
+    const response = await axios(config);
 
-      const data = response.data;
-      this.incrementPage();
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
+    const data = response.data;
+    this.incrementPage();
+    return data;
   }
 
   incrementPage() {

@@ -30,12 +30,17 @@ const picturesApiSeartch = new PicturesApiSeartch();
 refs.loadMore.classList.add('is-hidden');
 
 refs.searchForm.addEventListener('submit', onSubmit);
+
+// Для кнопки завантажити ще.
 // refs.loadMore.addEventListener('click', onLoadeMore);
+
 let allPage = 0;
 
 function onSubmit(evt) {
   evt.preventDefault();
-  refs.loadMore.classList.add('is-hidden');
+
+  // Для кнопки завантажити ще.
+  // refs.loadMore.classList.add('is-hidden');
 
   // Значення з інпут форми
 
@@ -66,44 +71,53 @@ function onSubmit(evt) {
       allPage += data.hits.length;
 
       if (data.totalHits <= allPage) {
-        refs.loadMore.classList.add('is-hidden');
+        // Для кнопки завантажити ще.
+        // refs.loadMore.classList.add('is-hidden');
 
         allPage = 0;
         murckupCard(data);
 
-        Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images !`);
+        Notiflix.Notify.info(
+          ' Were sorry, but you ve reached the end of search results.'
+        );
 
         return;
       }
 
       murckupCard(data);
-      infoNumberPicture();
 
-      refs.loadMore.classList.remove('is-hidden');
+      Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images !`);
+
+      // Для кнопки завантажити ще.
+      // refs.loadMore.classList.remove('is-hidden');
     })
     .catch(error => {
       console.error(error);
     });
 }
 
-function infoNumberPicture() {
-  Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images !`);
-}
+//  реалізація безкінечного скролу
 
 const onEntry = entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      console.log('пора грузіть статью');
+    if (entry.isIntersecting && picturesApiSeartch.queryPic !== '') {
+      // console.log('пора грузіть статью');
+
       picturesApiSeartch.getPictures().then(data => {
-        refs.gallery.insertadjacenthtml = '';
+        // refs.gallery.insertadjacenthtml = '';
+
+        // clearPicture();
+
+        // перевірка на завершення завантежених сторінок
         if (!data.hits.length) {
           Notiflix.Notify.warning(
-            `Sorry, there are no images matching your search query. Please try again.`
+            ` Were sorry, but you ve reached the end of search results.`
           );
           return;
         }
+
         murckupCard(data);
-        Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images !`);
+
         lightbox.refresh();
       });
     }
@@ -115,22 +129,6 @@ const options = {
 const observer = new IntersectionObserver(onEntry, options);
 observer.observe(refs.sentinel);
 
-function onLoadeMore() {
-  picturesApiSeartch.getPictures().then(data => {
-    let pageNow = data.hits.length;
-    allPage += pageNow;
-
-    murckupCard(data);
-
-    if (data.totalHits <= allPage) {
-      refs.loadMore.classList.add('is-hidden');
-      Notiflix.Notify.info(
-        ' Were sorry, but you ve reached the end of search results.'
-      );
-      allPage = 0;
-    }
-  });
-}
 // Ф-ція відмальовування перших картинок
 function murckupCard(data) {
   const murkup = data.hits
@@ -176,3 +174,22 @@ let lightbox = new SimpleLightbox('.photo-card a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
+
+// Ф-ція для кнопки завантажити більше
+
+// function onLoadeMore() {
+//   picturesApiSeartch.getPictures().then(data => {
+//     let pageNow = data.hits.length;
+//     allPage += pageNow;
+
+//     murckupCard(data);
+
+//     if (data.totalHits <= allPage) {
+//       refs.loadMore.classList.add('is-hidden');
+//       Notiflix.Notify.info(
+//         ' Were sorry, but you ve reached the end of search results.'
+//       );
+//       allPage = 0;
+//     }
+//   });
+// }

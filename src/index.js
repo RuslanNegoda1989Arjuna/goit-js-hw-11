@@ -20,10 +20,9 @@ Notiflix.Notify.init({
 
 const refs = {
   searchForm: document.querySelector('.search-form'),
-  // input: document.querySelector('[name="searchQuery"]'),
-  // submit: document.querySelector('[type="submit"]'),
   gallery: document.querySelector('.gallery'),
   loadMore: document.querySelector('.load-more'),
+  sentinel: document.querySelector('#sentinel'),
 };
 
 const picturesApiSeartch = new PicturesApiSeartch();
@@ -31,7 +30,7 @@ const picturesApiSeartch = new PicturesApiSeartch();
 refs.loadMore.classList.add('is-hidden');
 
 refs.searchForm.addEventListener('submit', onSubmit);
-refs.loadMore.addEventListener('click', onLoadeMore);
+// refs.loadMore.addEventListener('click', onLoadeMore);
 let allPage = 0;
 
 function onSubmit(evt) {
@@ -71,10 +70,14 @@ function onSubmit(evt) {
 
         allPage = 0;
         murckupCard(data);
+
+        Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images !`);
+
         return;
       }
 
       murckupCard(data);
+      infoNumberPicture();
 
       refs.loadMore.classList.remove('is-hidden');
     })
@@ -82,6 +85,35 @@ function onSubmit(evt) {
       console.error(error);
     });
 }
+
+function infoNumberPicture() {
+  Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images !`);
+}
+
+const onEntry = entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      console.log('пора грузіть статью');
+      picturesApiSeartch.getPictures().then(data => {
+        refs.gallery.insertadjacenthtml = '';
+        if (!data.hits.length) {
+          Notiflix.Notify.warning(
+            `Sorry, there are no images matching your search query. Please try again.`
+          );
+          return;
+        }
+        murckupCard(data);
+        Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images !`);
+        lightbox.refresh();
+      });
+    }
+  });
+};
+const options = {
+  rootMargin: '50px',
+};
+const observer = new IntersectionObserver(onEntry, options);
+observer.observe(refs.sentinel);
 
 function onLoadeMore() {
   picturesApiSeartch.getPictures().then(data => {

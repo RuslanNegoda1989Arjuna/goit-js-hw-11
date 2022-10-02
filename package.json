@@ -20,6 +20,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "handlebars": "^4.7.7",
+    "infinite-scroll": "^4.0.1",
     "modern-normalize": "^1.1.0",
     "notiflix": "^3.2.5",
     "parcel-transformer-hbs": "^1.0.3",

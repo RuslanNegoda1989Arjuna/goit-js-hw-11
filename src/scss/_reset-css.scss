@@ -1,3 +1,4 @@
+// @import '~node_modules/modern-normalize/modern-normalize.css';
 h1,
 h2,
 h3,
@@ -18,3 +19,8 @@ ul {
 .item {
   list-style-type: none;
 }
+
+// a {
+//   text-decoration: none;
+//   color: inherit;
+// }

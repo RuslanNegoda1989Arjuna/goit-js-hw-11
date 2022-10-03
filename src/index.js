@@ -39,6 +39,8 @@ let allPage = 0;
 function onSubmit(evt) {
   evt.preventDefault();
 
+  // const form = evt.currentTarget;
+
   // Для кнопки завантажити ще.
   // refs.loadMore.classList.add('is-hidden');
 
@@ -46,8 +48,6 @@ function onSubmit(evt) {
 
   picturesApiSeartch.queryPic =
     evt.currentTarget.elements.searchQuery.value.trim();
-
-  picturesApiSeartch.clearPage();
 
   // Перевірка на заповненість
   if (picturesApiSeartch.queryPic === '') {
@@ -85,7 +85,7 @@ function onSubmit(evt) {
       }
 
       murckupCard(data);
-
+      // form.reset();
       Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images !`);
 
       // Для кнопки завантажити ще.

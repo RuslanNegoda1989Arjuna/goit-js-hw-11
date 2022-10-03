@@ -69,20 +69,22 @@ function onSubmit(evt) {
         return;
       }
       allPage += data.hits.length;
+      // picturesApiSeartch.clearPage();
 
       if (data.totalHits <= allPage) {
         // Для кнопки завантажити ще.
         // refs.loadMore.classList.add('is-hidden');
 
-        allPage = 0;
         murckupCard(data);
-
+        allPage = 0;
         Notiflix.Notify.info(
           ' Were sorry, but you ve reached the end of search results.'
         );
 
         return;
       }
+
+      picturesApiSeartch.clearPage();
 
       murckupCard(data);
       // form.reset();
@@ -105,8 +107,6 @@ const onEntry = entries => {
 
       picturesApiSeartch.getPictures().then(data => {
         // refs.gallery.insertadjacenthtml = '';
-
-        // clearPicture();
 
         // перевірка на завершення завантежених сторінок
         if (!data.hits.length) {

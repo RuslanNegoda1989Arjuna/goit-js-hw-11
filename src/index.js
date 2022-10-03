@@ -38,8 +38,9 @@ let allPage = 0;
 
 function onSubmit(evt) {
   evt.preventDefault();
+  picturesApiSeartch.clearPage();
 
-  // const form = evt.currentTarget;
+  console.log(picturesApiSeartch.page);
 
   // Для кнопки завантажити ще.
   // refs.loadMore.classList.add('is-hidden');
@@ -69,13 +70,13 @@ function onSubmit(evt) {
         return;
       }
       allPage += data.hits.length;
-      // picturesApiSeartch.clearPage();
 
       if (data.totalHits <= allPage) {
         // Для кнопки завантажити ще.
         // refs.loadMore.classList.add('is-hidden');
 
         murckupCard(data);
+
         allPage = 0;
         Notiflix.Notify.info(
           ' Were sorry, but you ve reached the end of search results.'
@@ -84,10 +85,8 @@ function onSubmit(evt) {
         return;
       }
 
-      picturesApiSeartch.clearPage();
-
       murckupCard(data);
-      // form.reset();
+
       Notiflix.Notify.info(`Hooray! We found ${data.totalHits} images !`);
 
       // Для кнопки завантажити ще.
@@ -102,17 +101,15 @@ function onSubmit(evt) {
 
 const onEntry = entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting && picturesApiSeartch.queryPic !== '') {
-      // console.log('пора грузіть статью');
-
+    // Перевірка чи перетинає стража і чи це не перша сторінка.
+    if (entry.isIntersecting && picturesApiSeartch.page !== 1) {
       picturesApiSeartch.getPictures().then(data => {
-        // refs.gallery.insertadjacenthtml = '';
-
         // перевірка на завершення завантежених сторінок
         if (!data.hits.length) {
           Notiflix.Notify.warning(
             ` Were sorry, but you ve reached the end of search results.`
           );
+
           return;
         }
 
@@ -123,6 +120,7 @@ const onEntry = entries => {
     }
   });
 };
+
 const options = {
   rootMargin: '50px',
 };
